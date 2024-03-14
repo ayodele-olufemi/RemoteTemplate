@@ -1,0 +1,111 @@
+body {
+    width: 80%;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.g_one_logo {
+    height: calc(0.15 * 100vh);
+    margin-top: 1.5rem;
+    border-radius: 10px;
+}
+
+
+
+.loginForm {
+    width: 30rem;
+    border: 3px solid black;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 1.5rem;
+    background-color: gold;
+    padding-top: 20xp;
+    margin: 0 auto;
+}
+
+.loginForm span {
+    margin-left: 1.5rem;
+}
+
+.profile_area {
+    float: right;
+}
+
+.profilePicture {
+    float: left;
+    padding-right: 30px;
+}
+
+
+.p_texts {
+    text-align: center;
+    float: right;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    height: calc(0.15 * 100vh);
+    margin-top: 1.5rem;
+}
+
+.p_texts form {
+    margin-top: 20px;;
+}
+
+.user_name {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.loginForm label {
+    width: 7rem;
+    text-align: left;
+    font-weight: bold;
+}
+
+.loginForm input {
+    width: 15rem;
+    margin-bottom: 10px;
+}
+
+.heading {
+    height: calc(0.2 * 100vh);
+    padding: 10px;
+    background-image: linear-gradient(45deg, gray, gold, gold, gray);
+}
+
+.callToSignUp {
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 10px;
+    padding: 5px 20px;
+    width: 30rem;
+    margin: 0 auto;
+}
+
+.content {
+    min-height: calc(100vh - 110px - (0.2 * 100vh));
+}
+
+.footer {
+    background-image: linear-gradient(45deg, gray, gold, gold, gray);
+    font-weight: 600;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#todaysDate, #copyright {
+    line-height: 50px;
+    display: inline-block;
+}
+
+.profilePageSections section {
+    border: 2px black solid;
+    padding: 10px;
+    margin: 30px 0;
+}
+
+.profilePageSections label {
+    width: 13rem;
+    margin: 10px 0;
+}

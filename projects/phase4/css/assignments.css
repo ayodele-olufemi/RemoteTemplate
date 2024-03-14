@@ -1,0 +1,8 @@
+table, tr, td {
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+.columnHeaders, .uploadStatus, .score, .feedback {
+    text-align: center;
+}
