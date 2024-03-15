@@ -7,6 +7,9 @@ $docRoot = "http://" . $_SERVER["HTTP_HOST"] . "/";
 if ($local == false) {
     $path = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 }
+if ($local == false) {
+    $docRoot = "http://" . $_SERVER["HTTP_HOST"] . "/~ics325sp2409/";
+}
 
 $header = $path . "/includes/headerLoggedIn.php";
 $footer = $path . "/includes/footer2.php";
