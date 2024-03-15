@@ -5,6 +5,10 @@ $path = $_SERVER["DOCUMENT_ROOT"];
 $docRoot = "http://" . $_SERVER["HTTP_HOST"] . "/";
 
 if ($local == false) {
+    $docRoot = "http://" . $_SERVER["HTTP_HOST"] . "/~ics325sp2409/";
+}
+
+if ($local == false) {
     $path = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 }
 
