@@ -37,15 +37,15 @@ if (isset($_SESSION["confirmationGood"]) || isset($_SESSION["confirmationBad"]))
 $currentCourse = $_SESSION['currentCourse'];
 $courseID = $courseTitle = $courseDescription = "";
 
-$sql1 = "SELECT courseId, courseTitle, courseDescription 
+$sql1 = "SELECT c.courseId AS `courseId`, c.courseTitle AS `courseTitle`, c.courseDescription AS `courseDescription` 
          FROM enrollments e INNER JOIN course_assignments ca ON e.courseAssignmentId = ca.id
                             INNER JOIN courses c ON ca.courseId = c.id
          WHERE e.id = $currentCourse";
 if ($result = mysqli_query($cn, $sql1)) {
     $row = mysqli_fetch_row($result);
-    $courseID = $row[0]['courseId'];
-    $courseTitle = $row[0]['courseTitle'];
-    $courseDescription = $row[0]['courseDescription'];
+    $courseID = $row['0'];
+    $courseTitle = $row['1'];
+    $courseDescription = $row['2'];
 }
 
 // function to go view course materials
@@ -84,20 +84,20 @@ include($header);
             } ?>
         </h2>
     </div>
-    <h1><?php echo $courseId . ": " . $courseTitle ?></h1>
-    <form action="">
-        <input type="submit" name="gotoCourseMaterials" value="Course Materials">
-        <input type="submit" name="gotoAssignments" value="Assignments">
-        <input type="submit" name="gotoAssignments" value="Quizzes">
-        <input type="submit" name="gotoGrades" value="Grades">
+    <h1><?php echo $courseID . ": " . $courseTitle ?></h1>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <input type="submit" class="btn btn-primary" name="gotoCourseMaterials" value="Course Materials">
+        <input type="submit" class="btn btn-warning" name="gotoAssignments" value="Assignments">
+        <input type="submit" class="btn btn-success" name="gotoAssignments" value="Quizzes">
+        <input type="submit" class="btn btn-dark" name="gotoGrades" value="Grades">
     </form>
     <section>
         <h2>Course Description</h2>
-        <p><?= $courseDescription ?></p>
+        <p><?php echo $courseDescription ?></p>
     </section>
     <section>
         <h2>Course Syllabus</h2>
-        <embed src="" type="application/pdf" frameBorder="0" scrolling="auto" height="100%" width="100%">
+        <embed src="<?= $docRoot ?>projects/phase4/uploads/Syllabus1.pdf" type="application/pdf" frameBorder="0" scrolling="auto" height="100%" width="100%">
     </section>
 </div>
 <?php
