@@ -184,17 +184,21 @@ if (isset($_POST["enrollNow"])) {
 // function to drop class
 if (isset($_POST["dropClass"])) {
     $enrollId = $_POST["enrollId"];
-    $sql1 = "DELETE FROM grades WHERE enrollmentId = $enrollId";
-    $sql2 = "DELETE FROM enrollments WHERE id = $enrollId";
+
+    $sql1 = "DELETE FROM grades WHERE assessmentId IN (SELECT id FROM assessments where enrollmentId = $enrollId)";
+    $sql2 = "DELETE FROM assessments WHERE enrollmentId = $enrollId";
+    $sql3 = "DELETE FROM enrollments WHERE id = $enrollId";
 
     if (mysqli_query($cn, $sql1)) {
         if (mysqli_query($cn, $sql2)) {
-            $_SESSION["confirmationGood"] = "Class dropped successfully!";
-            header("location: " . $docRoot . "projects/phase4/otherPages/welcomeStudent.php");
-        } else {
-            $_SESSION["confirmationBad"] = "There was an error dropping the class, Please try again later.";
-            header("location: " . $docRoot . "projects/phase4/otherPages/welcomeStudent.php");
+            if (mysqli_query($cn, $sql3)) {
+                $_SESSION["confirmationGood"] = "Class dropped successfully!";
+                header("location: " . $docRoot . "projects/phase4/otherPages/welcomeStudent.php");
+            }
         }
+    } else {
+        $_SESSION["confirmationBad"] = "There was an error dropping the class, Please try again later.";
+        header("location: " . $docRoot . "projects/phase4/otherPages/welcomeStudent.php");
     }
 }
 

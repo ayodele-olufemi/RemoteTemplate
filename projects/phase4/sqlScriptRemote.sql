@@ -1,14 +1,17 @@
 -- Use Database
 USE ics325sp2409;
 
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS professors;
-DROP TABLE IF EXISTS auth_table;
-DROP TABLE IF EXISTS courses;
+
+DROP TABLE IF EXISTS course_feedbacks;
+DROP TABLE IF EXISTS grades;
+DROP TABLE IF EXISTS assessments;
+DROP TABLE IF EXISTS enrollments;
 DROP TABLE IF EXISTS grade_categories;
 DROP TABLE IF EXISTS course_assignments;
-DROP TABLE IF EXISTS enrollments;
-DROP TABLE IF EXISTS grades;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS auth_table;
+DROP TABLE IF EXISTS professors;
+DROP TABLE IF EXISTS students;
 
 -- Create tables
 CREATE TABLE students (
@@ -47,17 +50,17 @@ CREATE TABLE courses (
     credits INT NOT NULL DEFAULT 3
 );
 
+CREATE TABLE course_assignments (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    professorId INT NOT NULL,
+    courseId INT NOT NULL
+);
+
 CREATE TABLE grade_categories (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     courseAssignmentId INT NOT NULL,
     categoryName VARCHAR(50) NOT NULL, 
     maxObtainable INT NOT NULL
-);
-
-CREATE TABLE course_assignments (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
-    professorId INT NOT NULL,
-    courseId INT NOT NULL
 );
 
 CREATE TABLE enrollments (
@@ -67,25 +70,41 @@ CREATE TABLE enrollments (
     enrollment_status BOOLEAN DEFAULT false
 );
 
-CREATE TABLE grades (
+CREATE TABLE assessments (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     enrollmentId INT NOT NULL, 
-    gradeItemName VARCHAR(50) NOT NULL,
-    gradeCategoryId INT NOT NULL,
+    assessmentItemName VARCHAR(50) NOT NULL,
+    gradeCategoryId INT NOT NULL, 
+    assessment_question VARCHAR(50) NULL
+);
+
+CREATE TABLE grades (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    assessmentId INT NOT NULL,
+    student_submission VARCHAR(50) NULL,
+    assessment_feedback VARCHAR(50) NULL,
     score INT NOT NULL DEFAULT 0,
     initial BOOLEAN DEFAULT true
 );
+
+CREATE TABLE course_feedbacks (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    enrollmentId INT NOT NULL, 
+    notes VARCHAR(200) NOT NULL
+);
+
 
 -- Add foreign key constraints 
 ALTER TABLE auth_table ADD FOREIGN KEY (studentId) REFERENCES students(id);
 ALTER TABLE auth_table ADD FOREIGN KEY (professorId) REFERENCES professors(id);
 ALTER TABLE course_assignments ADD FOREIGN KEY (professorId) REFERENCES professors(id);
 ALTER TABLE course_assignments ADD FOREIGN KEY (courseId) REFERENCES courses(id);
-ALTER TABLE grade_categories ADD FOREIGN KEY (courseAssignmentId) REFERENCES course_assignments(id);
 ALTER TABLE enrollments ADD FOREIGN KEY (studentId) REFERENCES students(id);
 ALTER TABLE enrollments ADD FOREIGN KEY (courseAssignmentId) REFERENCES course_assignments(id);
-ALTER TABLE grades ADD FOREIGN KEY (enrollmentId) REFERENCES enrollments(id);
-ALTER TABLE grades ADD FOREIGN KEY (gradeCategoryId) REFERENCES grade_categories(id);
+ALTER TABLE assessments ADD FOREIGN KEY (enrollmentId) REFERENCES enrollments(id);
+ALTER TABLE grades ADD FOREIGN KEY (assessmentId) REFERENCES assessments(id);
+ALTER TABLE grade_categories ADD FOREIGN KEY (courseAssignmentId) REFERENCES course_assignments(id);
+ALTER TABLE course_feedbacks ADD FOREIGN KEY (enrollmentId) REFERENCES enrollments(id);
 
 -- View for student enrollment to see registered classes
 DROP VIEW IF EXISTS vw_studentEnrollments;
