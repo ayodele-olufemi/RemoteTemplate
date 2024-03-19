@@ -40,10 +40,10 @@ $studentId = $_SESSION['studentId'];
 $sql1 = "SELECT firstName, lastName, email, phone, photoUrl FROM students WHERE id = ?";
 
 //prepare sql to get student enrollment details
-$sql2 = "SELECT enrollId, studentId, courseId, courseTitle, courseDescription, profFirstName, profLastName, profEmail, enrollStatus FROM vw_studentEnrollments WHERE studentId = ?";
+$sql2 = "SELECT enrollId, studentId, courseId, courseTitle, courseDescription, profFirstName, profLastName, profEmail, enrollStatus FROM vw_studentEnrollments WHERE studentId = ? ORDER BY courseId";
 
 //prepare sql to get course available for registration
-$sql3 = "SELECT caId, courseId, courseTitle, courseDescription, profFirstName, profLastName, profEmail FROM vw_availableEnrollments WHERE courseId NOT IN (SELECT courseId from vw_studentEnrollments WHERE studentId = ?)";
+$sql3 = "SELECT caId, courseId, courseTitle, courseDescription, profFirstName, profLastName, profEmail FROM vw_availableEnrollments WHERE courseId NOT IN (SELECT courseId from vw_studentEnrollments WHERE studentId = ?) ORDER BY courseId";
 
 // Execute sql to get student details
 if ($stmt1 = mysqli_prepare($cn, $sql1)) {
@@ -101,7 +101,8 @@ if ($stmt2 = mysqli_prepare($cn, $sql2)) {
                 <td>
                     <form action=" . htmlspecialchars($_SERVER['PHP_SELF']) . " method='post'>
                         <input type='hidden' name='enrollId' value=" . $row['enrollId'] . ">
-                        <input type='submit' class='btn btn-success' value='Check Grade' name='checkGrade' " . $dis . "> <input type='submit' class='btn btn-danger' value='Drop Class' name='dropClass'>
+                        <input type='submit' class='btn btn-success' value='Go To Course Home' name='courseHome' " . $dis . ">
+                        <input type='submit' class='btn btn-danger' value='Drop Class' name='dropClass'>
                     </form>
                 </td>
                 </tr>";
@@ -203,17 +204,11 @@ if (isset($_POST["dropClass"])) {
 }
 
 
-// function to check grade
-if (isset($_POST["checkGrade"])) {
+// function to go to course home
+if (isset($_POST["courseHome"])) {
     $_SESSION['currentCourse'] = $_POST["enrollId"];
-    header("location: " . $docRoot . "projects/phase4/otherPages/gradesStudentView.php");
+    header("location: " . $docRoot . "projects/phase4/otherPages/studentCourseHome.php");
 }
-
-
-//TESTING CODE -- PRINT $_SESSION
-/* foreach ($_SESSION as $a => $b) {
-    echo $a . " => " . $b . " ";
-} */
 
 include($header);
 
