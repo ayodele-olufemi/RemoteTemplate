@@ -358,3 +358,34 @@ order by ca.assignmentName ASC;
 -- This query is used on the sign up page to check if a username exists
 SELECT id FROM auth_table WHERE username = "john_doe";
 select * from auth_table;
+
+
+--Triggers--
+-- Trigger to update enrollment status to true when a student enrolls in a course
+-- This trigger ensures that the enrollment_status of a specific enrollment is set to 'true' when it is created
+DELIMITER $$
+CREATE TRIGGER trg_updateEnrollmentStatus AFTER INSERT ON enrollments
+FOR EACH ROW
+BEGIN
+    UPDATE enrollments SET enrollment_status = true WHERE id = NEW.id;
+END$$
+DELIMITER ;
+
+-- Trigger to validate new grade entry against the max obtainable score for that grade category
+-- This trigger ensures that a new grade does not exceed the maximum score allowed for the related grade category
+DELIMITER $$
+CREATE TRIGGER trg_validateGrade BEFORE INSERT ON grades
+FOR EACH ROW
+BEGIN
+    DECLARE maxScore INT;
+    SELECT maxObtainable INTO maxScore
+    FROM grade_categories gc
+    JOIN assessments a ON a.gradeCategoryId = gc.id
+    WHERE a.id = NEW.assessmentId;
+    
+    IF NEW.score > maxScore THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: Grade exceeds maximum score for this category.';
+    END IF;
+END$$
+DELIMITER ;
