@@ -1,0 +1,158 @@
+
+:root {
+    --pageColor: #1b2a49;
+}
+
+body {
+    width: 100%;
+    position: relative;
+    background-color: var(--pageColor);
+}
+
+
+#accessed {
+    text-align: right;
+}
+
+#todaysDate, #accessed, #copyright {
+    line-height: 72px;
+}
+
+#profilePicture {
+    width: 80px;
+    height: 80px;
+    background-image: url("../images/me.png");
+    background-size: 80px 80px;
+    margin-left: 40px;
+    margin-right: 10px;
+}
+
+.header {
+    overflow: auto;
+}
+
+
+.header, .footer {
+    background-color: var(--pageColor);
+    color: white;
+}
+
+#imageCarousel {
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+}
+
+.headerTexts {
+    padding-left: 20px;
+    display: flex;
+    height: 200px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.headerRightItems {
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 40px;
+}
+.sideBar, .content {
+    min-height: calc(100vh - 200px);
+}
+
+
+.sideBar {
+    background-color: color-mix(in srgb, var(--pageColor) 50%, white);
+    width: 200px;
+    margin-right: 20px;
+    padding-bottom: 80px;
+}
+
+.content {
+    width: calc(100% - 220px);
+    background-color: white;
+    padding: 20px;
+    padding-bottom: 80px;
+    box-shadow:3px -3px 10px black;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: larger;
+}
+
+.footer {
+    clear: both;
+    height: 72px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    --bs-gutter-x: 0;
+    padding: 0px 20px;
+}
+
+.floatLeft {
+    float: left;
+}
+
+.floatRight {
+    float: right;
+}
+
+.clearBoth {
+    clear: both;
+}
+
+#copyright {
+    text-align: center;
+}
+
+.accordion-body {
+    padding: 0;
+}
+
+.linkToSection {
+    margin-left: 40px;
+    text-decoration: none;
+    display: block;
+    line-height: 30px;
+}
+
+.linkToSection:hover {
+    background-color: #aeaeaf;
+}
+
+#redColor {
+    width: 25px;
+    height: 25px;
+    background-color: #e2461f;
+    border: white 2px solid;
+}
+
+#blueColor {
+    width: 25px;
+    height: 25px;
+    background-color: #1d4ec1; 
+    border: white 2px solid;
+}
+
+#greenColor {
+    width: 25px;
+    height: 25px;
+    background-color: green;
+    border: white 2px solid;
+}
+
+#notHome::after {
+    width: 0;
+}
+
+#homeButton {
+    display: none;
+}
+
+
+.carousel-item img  {
+    width: 200px; 
+    height: 200px;
+}
