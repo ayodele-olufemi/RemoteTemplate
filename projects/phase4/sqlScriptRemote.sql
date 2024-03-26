@@ -53,7 +53,8 @@ CREATE TABLE courses (
 CREATE TABLE course_assignments (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     professorId INT NOT NULL,
-    courseId INT NOT NULL
+    courseId INT NOT NULL,
+    assignmentName VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE grade_categories (
@@ -236,27 +237,29 @@ INSERT INTO courses (courseId, courseTitle, courseDescription) VALUES
 
 
 -- Insert into course_assignments table
-INSERT INTO course_assignments (professorId, courseId) VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10),
-(11, 11),
-(12, 12),
-(13, 13),
-(14, 14),
-(15, 15),
-(16, 16),
-(17, 17),
-(18, 18),
-(19, 19),
-(20, 20);
+INSERT INTO course_assignments (professorId, courseId, assignmentName) VALUES 
+(1, 1, "Assignment 1"),
+(1, 1, "Assignment 2"),
+(1, 1, "Assignment 3"),
+(2, 2, "Assignment 1"),
+(3, 3, "Assignment 1"),
+(4, 4, "Assignment 1"),
+(5, 5, "Assignment 1"),
+(6, 6, "Assignment 1"),
+(7, 7, "Assignment 1"),
+(8, 8, "Assignment 1"),
+(9, 9, "Assignment 1"),
+(10, 10, "Assignment 1"),
+(11, 11, "Assignment 1"),
+(12, 12, "Assignment 1"),
+(13, 13, "Assignment 1"),
+(14, 14, "Assignment 1"),
+(15, 15, "Assignment 1"),
+(16, 16, "Assignment 1"),
+(17, 17, "Assignment 1"),
+(18, 18, "Assignment 1"),
+(19, 19, "Assignment 1"),
+(20, 20, "Assignment 1");
 
 
 -- Insert into grade_categories table
@@ -320,3 +323,38 @@ FROM enrollments e
 CROSS JOIN grade_items gi
 ORDER BY RAND()
 LIMIT 200; */
+
+-- Query scenarios
+-- 1 -- 
+-- This query is used to display student details to on the student welcome page and profile page
+SELECT firstName, lastName, email, phone, photoUrl 
+FROM students 
+WHERE id = 1;
+
+-- 2 --
+-- This query is used to display the courses a student is currently enrolled in
+SELECT enrollId, studentId, courseId, courseTitle, courseDescription, profFirstName, profLastName, profEmail, enrollStatus 
+FROM vw_studentEnrollments 
+WHERE studentId = 1;
+
+-- 3 --
+-- This query is used to display the courses a student is not currently enrolled
+SELECT caId, courseId, courseTitle, courseDescription, profFirstName, profLastName, profEmail 
+FROM vw_availableEnrollments 
+WHERE courseId NOT IN (SELECT courseId from vw_studentEnrollments WHERE studentId = 1);
+
+
+-- 4 --
+-- This query is used to display the assignments on the assignment pages
+SELECT c.courseTitle, ca.assignmentName, g.score, ca.id from course_assignments ca
+inner join enrollments e on e.courseAssignmentId = ca.courseId
+inner join students s on s.id = e.studentId
+inner join courses c on c.id = ca.courseId
+inner join grades g on g.enrollmentId = e.id
+where e.studentId = 1
+order by ca.assignmentName ASC;
+
+-- 5 --
+-- This query is used on the sign up page to check if a username exists
+SELECT id FROM auth_table WHERE username = "john_doe";
+select * from auth_table;
