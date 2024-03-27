@@ -389,3 +389,59 @@ BEGIN
     END IF;
 END$$
 DELIMITER ;
+
+
+
+
+
+--SQL function Calculate percentage score for a course
+
+DELIMITER $$
+CREATE FUNCTION `CalculateCoursePercentage` (studentID INT, courseAssignmentID INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE totalObtained DECIMAL(10,2);
+    DECLARE totalMaxObtainable DECIMAL(10,2);
+    DECLARE coursePercentage DECIMAL(5,2);
+    
+    -- Calculate total scores obtained by the student in the course
+    SELECT SUM(score) INTO totalObtained
+    FROM grades
+    INNER JOIN assessments ON grades.assessmentId = assessments.id
+    INNER JOIN enrollments ON assessments.enrollmentId = enrollments.id
+    WHERE enrollments.studentId = studentID AND enrollments.courseAssignmentId = courseAssignmentID;
+    
+    -- Calculate total maximum obtainable scores for the course
+    SELECT SUM(maxObtainable) INTO totalMaxObtainable
+    FROM grade_categories
+    WHERE courseAssignmentId = courseAssignmentID;
+    
+    -- Calculate percentage
+    SET coursePercentage = (totalObtained / totalMaxObtainable) * 100;
+    
+    RETURN coursePercentage;
+END$$
+DELIMITER ;
+
+
+
+
+--SQL veiw course percentage scores for students
+
+CREATE VIEW `vw_CoursePercentageScores` AS
+SELECT 
+    students.id AS `StudentID`,
+    students.firstName AS `FirstName`,
+    students.lastName AS `LastName`,
+    courses.courseId AS `CourseID`,
+    courses.courseTitle AS `CourseTitle`,
+    CalculateCoursePercentage(students.id, enrollments.courseAssignmentId) AS `PercentageScore`
+FROM students
+INNER JOIN enrollments ON students.id = enrollments.studentId
+INNER JOIN course_assignments ON enrollments.courseAssignmentId = course_assignments.id
+INNER JOIN courses ON course_assignments.courseId = courses.id
+ORDER BY students.lastName, courses.courseId;
+
+
+
