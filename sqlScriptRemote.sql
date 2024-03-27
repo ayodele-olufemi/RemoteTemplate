@@ -394,7 +394,7 @@ DELIMITER ;
 
 
 
---SQL function Calculate percentage score for a course
+-- SQL function Calculate percentage score for a course
 
 DELIMITER $$
 CREATE FUNCTION `CalculateCoursePercentage` (studentID INT, courseAssignmentID INT)
@@ -427,7 +427,7 @@ DELIMITER ;
 
 
 
---SQL veiw course percentage scores for students
+-- SQL veiw course percentage scores for students
 
 CREATE VIEW `vw_CoursePercentageScores` AS
 SELECT 
