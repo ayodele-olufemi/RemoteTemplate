@@ -9,13 +9,13 @@ if ($local == false) {
     $path = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 }
 
-$header = $path . "/project/phase2/includes/headerLoggedIn.php";
-$footer = $path . "/project/phase2/includes/footer2.php";
+$header = $path . "/includes/headerLoggedIn.php";
+$footer = $path . "/includes/footer2.php";
 
 require_once($path . "/database.php");
 // Check if the user is not logged in. Send them to index page
 if (!isset($_SESSION["loggedin"])) {
-    header("location: " . $docRoot . "project/phase2/index.php");
+    header("location: " . $docRoot . "projects/phase4/index.php");
     exit();
 }
 include($header);
@@ -28,7 +28,7 @@ if (isset($_POST["returnHome"])) {
         if (isset($_SESSION["confirmationBad"])) {
             unset($_SESSION["confirmationBad"]);
         }
-        header("location: " . $docRoot . "/project/phase2/otherPages/welcomeStudent.php");
+        header("location: " . $docRoot . "projects/phase4/otherPages/welcomeStudent.php");
     } else {
         if (isset($_SESSION["confirmationGood"])) {
             unset($_SESSION["confirmationGood"]);
@@ -36,7 +36,7 @@ if (isset($_POST["returnHome"])) {
         if (isset($_SESSION["confirmationBad"])) {
             unset($_SESSION["confirmationBad"]);
         }
-        header("location: " . $docRoot . "/project/phase2/otherPages/welcomeProfessor.php");
+        header("location: " . $docRoot . "projects/phase4/otherPages/welcomeProfessor.php");
     }
 }
 
@@ -74,13 +74,13 @@ if($stmt1 = mysqli_prepare($cn, $sql1)){
                     <tr>
                         <td>
                             <div class='name'>
-                                <a href='".$docRoot."project/phase2/otherPages/submissions.php'>". $row['assignmentName']."</a>
+                                <a href='".$docRoot."project/phase4/otherPages/submissions.php'>". $row['assignmentName']."</a>
                             </div>
                             <div>Due Date: ". $row['dueDate']."</div>
                         </td>
                         <td class='uploadStatus'>
                             <div>
-                                <a href='".$docRoot."project/phase2/otherPages/submissions.php'>". $row['submission']."</a>
+                                <a href='".$docRoot."project/phase4/otherPages/submissions.php'>". $row['submission']."</a>
                             </div>
                         </td>
                         <td class='score'>
@@ -88,7 +88,7 @@ if($stmt1 = mysqli_prepare($cn, $sql1)){
                         </td>
                         <td class='feedback'>
                             <div>
-                                <a href='".$docRoot."project/phase2/otherPages/feedback.php?name=".$row['id']."&score=". $row['score']."/".$row['maxScore']."'>unread</a>
+                                <a href='".$docRoot."project/phase4/otherPages/feedback.php?name=".$row['id']."&score=". $row['score']."/".$row['maxScore']."'>unread</a>
                             </div>
                         </td>
                     </tr>
@@ -108,7 +108,7 @@ if($stmt1 = mysqli_prepare($cn, $sql1)){
 
 
 ?>
-<link rel="stylesheet" href="<?php echo $docRoot; ?>project/phase2/css/assignments.css">
+<link rel="stylesheet" href="<?php echo $docRoot; ?>project/phase4/css/assignments.css">
 <h1>Assignments</h1>
 <p><?php echo $available ?></p>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
