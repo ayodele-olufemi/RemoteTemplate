@@ -74,13 +74,13 @@ if($stmt1 = mysqli_prepare($cn, $sql1)){
                     <tr>
                         <td>
                             <div class='name'>
-                                <a href='".$docRoot."project/phase4/otherPages/submissions.php'>". $row['assignmentName']."</a>
+                                <a href='".$docRoot."projects/phase4/otherPages/submissions.php'>". $row['assignmentName']."</a>
                             </div>
                             <div>Due Date: ". $row['dueDate']."</div>
                         </td>
                         <td class='uploadStatus'>
                             <div>
-                                <a href='".$docRoot."project/phase4/otherPages/submissions.php'>". $row['submission']."</a>
+                                <a href='".$docRoot."projects/phase4/otherPages/submissions.php'>". $row['submission']."</a>
                             </div>
                         </td>
                         <td class='score'>
@@ -88,7 +88,7 @@ if($stmt1 = mysqli_prepare($cn, $sql1)){
                         </td>
                         <td class='feedback'>
                             <div>
-                                <a href='".$docRoot."project/phase4/otherPages/feedback.php?name=".$row['id']."&score=". $row['score']."/".$row['maxScore']."'>unread</a>
+                                <a href='".$docRoot."projects/phase4/otherPages/feedback.php?name=".$row['id']."&score=". $row['score']."/".$row['maxScore']."'>unread</a>
                             </div>
                         </td>
                     </tr>
@@ -108,7 +108,7 @@ if($stmt1 = mysqli_prepare($cn, $sql1)){
 
 
 ?>
-<link rel="stylesheet" href="<?php echo $docRoot; ?>project/phase4/css/assignments.css">
+<link rel="stylesheet" href="<?php echo $docRoot; ?>projects/phase4/css/assignments.css">
 <h1>Assignments</h1>
 <p><?php echo $available ?></p>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
