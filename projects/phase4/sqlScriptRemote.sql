@@ -1,6 +1,7 @@
 -- Use Database
-USE ics325sp2409;
+/* USE ics325sp2409; */
 
+use gradebook;
 
 DROP TABLE IF EXISTS course_feedbacks;
 DROP TABLE IF EXISTS grades;
@@ -53,8 +54,7 @@ CREATE TABLE courses (
 CREATE TABLE course_assignments (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     professorId INT NOT NULL,
-    courseId INT NOT NULL,
-    assignmentName VARCHAR(50) NOT NULL
+    courseId INT NOT NULL
 );
 
 CREATE TABLE grade_categories (
@@ -76,6 +76,7 @@ CREATE TABLE assessments (
     enrollmentId INT NOT NULL, 
     assessmentItemName VARCHAR(50) NOT NULL,
     gradeCategoryId INT NOT NULL, 
+    dueDate DATE NOT NULL,
     assessment_question VARCHAR(50) NULL
 );
 
@@ -103,6 +104,7 @@ ALTER TABLE course_assignments ADD FOREIGN KEY (courseId) REFERENCES courses(id)
 ALTER TABLE enrollments ADD FOREIGN KEY (studentId) REFERENCES students(id);
 ALTER TABLE enrollments ADD FOREIGN KEY (courseAssignmentId) REFERENCES course_assignments(id);
 ALTER TABLE assessments ADD FOREIGN KEY (enrollmentId) REFERENCES enrollments(id);
+ALTER TABLE assessments ADD FOREIGN KEY (gradeCategoryId) REFERENCES grade_categories(id);
 ALTER TABLE grades ADD FOREIGN KEY (assessmentId) REFERENCES assessments(id);
 ALTER TABLE grade_categories ADD FOREIGN KEY (courseAssignmentId) REFERENCES course_assignments(id);
 ALTER TABLE course_feedbacks ADD FOREIGN KEY (enrollmentId) REFERENCES enrollments(id);
@@ -237,43 +239,51 @@ INSERT INTO courses (courseId, courseTitle, courseDescription) VALUES
 
 
 -- Insert into course_assignments table
-INSERT INTO course_assignments (professorId, courseId, assignmentName) VALUES 
-(1, 1, "Assignment 1"),
-(1, 1, "Assignment 2"),
-(1, 1, "Assignment 3"),
-(2, 2, "Assignment 1"),
-(3, 3, "Assignment 1"),
-(4, 4, "Assignment 1"),
-(5, 5, "Assignment 1"),
-(6, 6, "Assignment 1"),
-(7, 7, "Assignment 1"),
-(8, 8, "Assignment 1"),
-(9, 9, "Assignment 1"),
-(10, 10, "Assignment 1"),
-(11, 11, "Assignment 1"),
-(12, 12, "Assignment 1"),
-(13, 13, "Assignment 1"),
-(14, 14, "Assignment 1"),
-(15, 15, "Assignment 1"),
-(16, 16, "Assignment 1"),
-(17, 17, "Assignment 1"),
-(18, 18, "Assignment 1"),
-(19, 19, "Assignment 1"),
-(20, 20, "Assignment 1");
+INSERT INTO course_assignments (professorId, courseId) VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12),
+(13, 13),
+(14, 14),
+(15, 15),
+(16, 16),
+(17, 17),
+(18, 18),
+(19, 19),
+(20, 20);
 
 
 -- Insert into grade_categories table
-/* INSERT INTO grade_categories (courseAssignmentId, categoryName, maxObtainable) VALUES
+INSERT INTO grade_categories (courseAssignmentId, categoryName, maxObtainable) VALUES
 (1, 'Homework', 100),
-(2, 'Quizzes', 50),
-(3, 'Midterm', 200),
-(4, 'Final Exam', 300),
-(5, 'Projects', 150),
+(1, 'Quizzes', 50),
+(1, 'Midterm', 200),
+(1, 'Final Exam', 300),
+(1, 'Projects', 150),
 (1, 'Participation', 50),
+(1, 'Lab Reports', 100),
+(1, 'Essays', 100),
+(1, 'Presentations', 150),
+(1, 'Attendance', 50),
+(2, 'Homework', 100),
+(2, 'Quizzes', 50),
+(2, 'Midterm', 200),
+(2, 'Final Exam', 300),
+(2, 'Projects', 150),
+(2, 'Participation', 50),
 (2, 'Lab Reports', 100),
-(3, 'Essays', 100),
-(4, 'Presentations', 150),
-(5, 'Attendance', 50); */
+(2, 'Essays', 100),
+(2, 'Presentations', 150),
+(2, 'Attendance', 50);
 
 
 -- Insert into enrollments table
@@ -299,7 +309,21 @@ INSERT INTO enrollments (studentId, courseAssignmentId) VALUES
 (19, 19),
 (20, 20);
 
+-- Insert into assessments table
+insert into assessments (enrollmentId, assessmentItemName, gradeCategoryId, dueDate) values 
+(1, "Homework 1", 1, '2024-01-01'),
+(1, "Homework 2", 1, '2024-01-08'),
+(1, "Quiz 1", 2, '2024-01-01'),
+(1, "Quiz 2", 2, '2024-01-12'),
+(1, "Quiz 3", 2, '2024-01-20'),
+(1, "Project Part 1", 5, '2024-01-12');
 
+-- Insert into grades table
+INSERT INTO grades (assessmentID, student_submission, assessment_feedback, score) VALUES
+(1, "1 submission", "good job", 100),
+(2, "1 submission", "needs improvement", 75),
+(3, "1 submission", "good", 48),
+(6, "1 submission", "nice work", 130);
 
 -- Insert into grade_items table
 /* INSERT INTO grade_items (gradeItemName, gradeCategoryId, courseAssignmentId)
@@ -346,13 +370,10 @@ WHERE courseId NOT IN (SELECT courseId from vw_studentEnrollments WHERE studentI
 
 -- 4 --
 -- This query is used to display the assignments on the assignment pages
-SELECT c.courseTitle, ca.assignmentName, g.score, ca.id from course_assignments ca
-inner join enrollments e on e.courseAssignmentId = ca.courseId
-inner join students s on s.id = e.studentId
-inner join courses c on c.id = ca.courseId
-inner join grades g on g.enrollmentId = e.id
-where e.studentId = 1
-order by ca.assignmentName ASC;
+select a.assessmentItemName as assignmentName, gc.categoryName, g.student_submission, g.score, gc.maxObtainable as maxScore, DATE_FORMAT(a.dueDate, "%M %d %Y" ) as dueDate from grade_categories gc 
+INNER JOIN assessments a on a.gradeCategoryId = gc.id 
+INNER JOIN grades g on g.assessmentId = a.id 
+where enrollmentId = 1; 
 
 -- 5 --
 -- This query is used on the sign up page to check if a username exists
